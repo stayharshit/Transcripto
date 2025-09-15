@@ -1,0 +1,90 @@
+/* ---------- GLOBAL ---------- */
+.stApp {
+    background: #f9fafb;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+    background: linear-gradient(to right, #ffffff, #f3f4f6);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+.logo img {
+    height: 40px;
+}
+
+.header img {
+    height: 40px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s, border-bottom 0.3s;
+    padding-bottom: 4px;
+}
+
+.nav-links a:hover {
+    color: #6C63FF;
+    border-bottom: 2px solid #6C63FF;
+}
+
+.nav-links a:hover {
+    color: #6366f1;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+    color: #666;
+    font-size: 0.9rem;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+}
+
+.footer a {
+    color: #6366f1;
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.stButton>button {
+    background: #6C63FF;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    transition: 0.3s ease;
+}
+
+.stButton>button:hover {
+    background: #4A47A3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    border-radius: 8px !important;
+    border: 1px solid #ddd !important;
+    padding: 10px !important;
+    font-size: 1rem !important;
+}
+
+input:focus {
+    border: 1px solid #6C63FF !important;
+    outline: none !important;
+    box-shadow: 0 0 4px rgba(108, 99, 255, 0.3);
+}
