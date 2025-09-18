@@ -6,7 +6,8 @@ from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, Tran
 import openai
 from openai import OpenAI
 
-client = OpenAI()
+api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=api_key)
 
 def summarize_with_openai(transcript: str) -> str:
     resp = client.chat.completions.create(
