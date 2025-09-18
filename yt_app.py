@@ -10,18 +10,22 @@ api_key = st.secrets["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
 
 def summarize_with_openai(transcript: str) -> str:
-    resp = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # or gpt-4
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that summarizes transcripts."},
-            {"role": "user", "content": transcript},
-        ],
-        max_tokens=200,
-        temperature=0.7,
-    )
-    return resp.choices[0].message.content
-
-
+    try:
+        resp = client.chat.completions.create(
+            model="gpt-3.5-turbo",  # or gpt-4
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that summarizes transcripts."},
+                {"role": "user", "content": transcript},
+            ],
+            max_tokens=200,
+            temperature=0.7,
+        )
+        return resp.choices[0].message.content
+    except Exception as e:
+        # Fallback: return None instead of crashing
+        print(f"OpenAI error: {e}")
+        st.warning("⚠️ Unable to generate AI summary due to technical issues. Please try again later.")
+        return None
 # --- Load external CSS ---
 def load_css(file_path):
     with open(file_path) as f:
@@ -103,21 +107,25 @@ if "transcript" in st.session_state:
 
     with st.spinner("Summarizing with OpenAI... ✨"):
         summary = summarize_with_openai(st.session_state["transcript"])
-        st.session_state["summary"] = summary
+        if summary:
+            st.session_state["summary"] = summary
 
 # --- Show Results ---
-if "summary" in st.session_state and "transcript" in st.session_state:
+if "transcript" in st.session_state:
     tab1, tab2 = st.tabs(["📌 AI Summary", "📜 Transcript"])
 
     with tab1:
         st.subheader("✨ AI Summary")
-        st.write(st.session_state["summary"])
-        st.download_button(
-            "⬇️ Download Summary",
-            st.session_state["summary"],
-            "summary.txt",
-            key="download_summary_tab"
-        )
+        if "summary" in st.session_state and st.session_state["summary"]:
+            st.write(st.session_state["summary"])
+            st.download_button(
+                "⬇️ Download Summary",
+                st.session_state["summary"],
+                "summary.txt",
+                key="download_summary_tab"
+            )
+        else:
+            st.info("⚠️ AI summary couldn't be generated due to a technical issue.")
 
     with tab2:
         st.subheader("📜 Full Transcript")
@@ -127,26 +135,6 @@ if "summary" in st.session_state and "transcript" in st.session_state:
             st.session_state["transcript"],
             "transcript.txt",
             key="download_transcript_tab"
-        )
-
-if "transcript" in st.session_state:
-    with st.expander("📜 Full Transcript"):
-        st.text_area("Transcript", st.session_state["transcript"], height=300)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.download_button(
-            "⬇️ Download Transcript",
-            st.session_state["transcript"],
-            "transcript.txt",
-            key="download_transcript_expander"
-        )
-    with col2:
-        st.download_button(
-            "⬇️ Download Summary",
-            st.session_state["summary"],
-            "summary.txt",
-            key="download_summary_expander"
         )
 
 # --- Inject Footer ---
